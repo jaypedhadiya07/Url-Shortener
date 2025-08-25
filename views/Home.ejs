@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>URL Shortener | Shortify</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon/fonts/remixicon.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #6366f1;
+      --primary-dark: #4f46e5;
+      --primary-light: #eef2ff;
+      --dark: #1e293b;
+      --light: #ffffff;
+      --gray: #475569;
+      --success: #22c55e;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #a5b4fc, #818cf8);
+      color: var(--dark);
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 50px auto;
+      padding: 0 20px;
+    }
+
+    .hero { text-align: center; margin-bottom: 40px; }
+    .hero h1 { font-size: 2.5rem; margin-bottom: 15px; font-weight: 700; }
+    .hero p { font-size: 1.05rem; color: var(--gray); max-width: 600px; margin: 0 auto; }
+
+    /* Form */
+    .url-form-container {
+      background: var(--light);
+      border-radius: 16px;
+      padding: 35px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+      margin-bottom: 40px;
+    }
+    .form-title { font-size: 1.4rem; margin-bottom: 22px; text-align: center; font-weight: 600; }
+    form { display: flex; gap: 12px; }
+    input[type="text"] {
+      flex: 1; padding: 14px 18px;
+      border: 1px solid #e2e8f0; border-radius: 10px;
+      font-size: 16px; background: #f9fafb;
+    }
+    input[type="text"]:focus {
+      outline: none; border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+      background: #fff;
+    }
+    button {
+      padding: 12px 20px;
+      background: var(--primary);
+      border: none; border-radius: 10px;
+      color: white; font-weight: 600;
+      cursor: pointer; transition: all 0.3s;
+      display: flex; align-items: center; gap: 6px;
+    }
+    button:hover { background: var(--primary-dark); transform: translateY(-2px); }
+
+    .message {
+      text-align: center;
+      padding: 15px;
+      background: rgba(34, 197, 94, 0.1);
+      border-radius: 10px;
+      margin: 20px 0;
+      color: var(--success);
+      font-weight: 500;
+    }
+
+    /* Admin button */
+    .admin-panel-btn {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: #fff; font-weight: 600;
+      margin-bottom: 25px; border: none; border-radius: 10px;
+      padding: 12px 20px; cursor: pointer;
+      display: inline-flex; align-items: center; gap: 8px;
+    }
+    .admin-panel-btn:hover {
+      background: linear-gradient(135deg, var(--primary-dark), #3730a3);
+      box-shadow: 0 4px 12px rgba(79, 70, 229, 0.4);
+      transform: translateY(-2px);
+    }
+
+    /* Table */
+    .urls-table-container {
+      background: var(--light);
+      border-radius: 16px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+      overflow: hidden;
+    }
+    table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+    th, td { padding: 14px 18px; text-align: left; }
+    th {
+      background: var(--primary-light);
+      color: var(--dark);
+      font-weight: 600; text-transform: uppercase;
+      font-size: 0.8rem; letter-spacing: 0.5px;
+    }
+    tr:nth-child(even) { background: #f9fafb; }
+    tr:hover { background: #f1f5f9; }
+
+    .url-cell { max-width: 300px; }
+    .original-url {
+      color: var(--gray); font-size: 0.85rem;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      display: block; margin-bottom: 5px;
+    }
+    .short-url { color: var(--primary-dark); font-weight: 500; text-decoration: none; }
+    .short-url:hover { text-decoration: underline; }
+
+    .click-count {
+      font-weight: 600; color: var(--primary);
+      display: flex; align-items: center; gap: 6px;
+    }
+
+    /* Visit History */
+    .history-toggle {
+      padding: 6px 12px;
+      background: var(--primary-light);
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--primary-dark);
+      border: 1px solid #c7d2fe;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .history-toggle:hover { background: #c7d2fe; }
+
+    .history-row { background: #f9fafb; }
+    .history-card {
+      padding: 15px;
+      border-radius: 12px;
+      background: var(--light);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      margin: 10px 0;
+    }
+    .visit-history-list {
+      list-style: none;
+      max-height: 160px;
+      overflow-y: auto;
+      margin-top: 10px;
+      padding-left: 0;
+    }
+    .visit-history-list li {
+      font-size: 0.85rem;
+      color: var(--dark);
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .visit-history-list li i { color: var(--primary-dark); }
+
+    .empty-state { text-align: center; padding: 40px; color: var(--gray); }
+    .empty-state i { font-size: 3rem; margin-bottom: 15px; color: #cbd5e1; }
+
+    @media (max-width: 768px) {
+      form { flex-direction: column; }
+      th, td { padding: 12px 14px; font-size: 0.85rem; }
+      .urls-table-container { overflow-x: auto; }
+      table { min-width: 650px; }
+    }
+  </style>
+</head>
+<body>
+  <%- include('partials/navbar', { user: user }) %>
+  
+  <div class="container">
+    <div class="hero">
+      <h1>Shorten Your Long URLs</h1>
+      <p>Create shortened URLs that are easy to share and track</p>
+    </div>
+
+    <!-- URL FORM -->
+    <div class="url-form-container">
+      <h2 class="form-title">Create New Short URL</h2>
+      <form method="POST" action="/url/newurl">
+        <input type="text" name="url" placeholder="Paste your long URL here (e.g., https://example.com)" required />
+        <button type="submit">
+          <i class="ri-links-line"></i> Shorten
+        </button>
+      </form>
+    </div>
+
+    <!-- SUCCESS MESSAGE -->
+    <% if (typeof id !== 'undefined') { %>
+      <div class="message">
+        ✅ Your short URL is ready: 
+        <a target="_blank" href="/url/<%= id %>">
+          <%= "http://localhost:8000/url/" + id %>
+        </a>
+      </div>
+    <% } %>
+
+    <!-- URLS TABLE -->
+    <% if (typeof urls !== 'undefined' && urls.length > 0) { %>
+      <% if (user && user.role === "ADMIN") { %>
+        <a href="/admin/user">
+          <button class="admin-panel-btn">
+            <i class="ri-admin-line"></i> Admin Panel
+          </button>
+        </a>
+      <% } %>
+
+      <div class="urls-table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Short ID</th>
+              <th class="url-cell">URLs</th>
+              <th>Clicks</th>
+              <th>Visit History</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% urls.forEach((url, index) => { %>
+              <tr>
+                <td><%= index + 1 %></td>
+                <td><code><%= url.shortID %></code></td>
+                <td>
+                  <span class="original-url" title="<%= url.redirectURL %>">
+                    <%= url.redirectURL %>
+                  </span>
+                  <a class="short-url" href="/url/<%= url.shortID %>" target="_blank">
+                    <%= "http://localhost:8000/url/" + url.shortID %>
+                  </a>
+                </td>
+                <td>
+                  <span class="click-count">
+                    <i class="ri-line-chart-line"></i> <%= url.visitHistory.length %>
+                  </span>
+                </td>
+                <td>
+                  <% if (url.visitHistory.length > 0) { %>
+                    <button class="history-toggle" data-index="<%= index %>">
+                      View History
+                    </button>
+                  <% } else { %>
+                    <span class="click-count">No visits yet</span>
+                  <% } %>
+                </td>
+              </tr>
+              <% if (url.visitHistory.length > 0) { %>
+                <tr id="history-<%= index %>" class="history-row" style="display: none;">
+                  <td colspan="5">
+                    <div class="history-card">
+                      <strong>Last Visits (<%= url.visitHistory.length %>)</strong>
+                      <ul class="visit-history-list">
+                        <% url.visitHistory.slice(-5).reverse().forEach(visit => { %>
+                          <li>
+                            <i class="ri-time-line"></i>
+                            <%= new Date(visit.timestamp).toLocaleString() %>
+                          </li>
+                        <% }) %>
+                      </ul>
+                    </div>
+                  </td>
+                </tr>
+              <% } %>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+    <% } else { %>
+      <div class="empty-state">
+        <i class="ri-link-unlink"></i>
+        <h3>No shortened URLs yet</h3>
+        <p>Create your first shortened URL using the form above</p>
+      </div>
+    <% } %>
+  </div>
+
+  <script>
+    // attach click events safely
+    document.addEventListener("DOMContentLoaded", () => {
+      document.querySelectorAll(".history-toggle").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const index = btn.getAttribute("data-index");
+          toggleHistory(index);
+        });
+      });
+    });
+
+    function toggleHistory(index) {
+      const row = document.getElementById(`history-${index}`);
+      row.style.display = row.style.display === "none" ? "table-row" : "none";
+    }
+  </script>
+</body>
+</html>
+  

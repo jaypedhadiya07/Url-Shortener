@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>URL Shortened Successfully</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #a5b4fc, #818cf8); /* soft indigo gradient */
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 600px;
+      background: #fafafa;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+      padding: 35px 28px;
+      text-align: center;
+      position: relative;
+    }
+
+    .back-btn {
+      position: absolute;
+      top: 18px;
+      left: 18px;
+      color: #6366f1;
+      text-decoration: none;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      transition: color 0.2s ease;
+      font-size: 0.95rem;
+    }
+
+    .back-btn:hover {
+      color: #4338ca;
+    }
+
+    .back-btn i {
+      margin-right: 6px;
+    }
+
+    h1 {
+      margin: 15px 0;
+      font-size: 2rem;
+      font-weight: 700;
+      color: #1e293b; /* slate */
+    }
+
+    .success-check {
+      color: #22c55e; /* soft green */
+      font-size: 3.2rem;
+      margin-bottom: 15px;
+    }
+
+    .description {
+      color: #475569; /* slate gray */
+      font-size: 1rem;
+      margin-bottom: 25px;
+      line-height: 1.6;
+    }
+
+    .url-card {
+      background: #f4f4fb;
+      border-radius: 12px;
+      padding: 22px;
+      margin-bottom: 25px;
+      border: 2px dashed #818cf8;
+    }
+
+    .short-url {
+      font-size: 1.1rem;
+      color: #4338ca;
+      font-weight: 600;
+      word-break: break-word;
+      margin-bottom: 18px;
+      display: block;
+      text-decoration: none;
+      padding: 10px;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+      transition: all 0.2s ease;
+    }
+
+    .short-url:hover {
+      color: #3730a3;
+      box-shadow: 0 4px 10px rgba(129, 140, 248, 0.25);
+    }
+
+    .action-button {
+      padding: 11px 26px;
+      border-radius: 50px;
+      border: none;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+      background: #6366f1;
+      color: #fff;
+      font-size: 1rem;
+    }
+
+    .action-button:hover {
+      background: #4f46e5;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(99, 102, 241, 0.25);
+    }
+
+    .action-button i {
+      margin-right: 8px;
+    }
+
+    .copy-confirm {
+      margin-top: 12px;
+      color: #16a34a;
+      font-weight: 600;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .features {
+      display: flex;
+      justify-content: center;
+      gap: 25px;
+      margin-top: 28px;
+      flex-wrap: wrap;
+    }
+
+    .feature {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: #475569;
+      padding: 12px;
+      border-radius: 12px;
+      width: 110px;
+      transition: background 0.2s ease;
+    }
+
+    .feature:hover {
+      background: #f1f5f9;
+    }
+
+    .feature i {
+      font-size: 1.7rem;
+      color: #6366f1;
+      margin-bottom: 8px;
+    }
+
+    .feature-text {
+      font-size: 0.88rem;
+      font-weight: 600;
+      text-align: center;
+    }
+
+    @media (max-width: 650px) {
+      .container {
+        padding: 28px 20px;
+      }
+
+      h1 {
+        font-size: 1.7rem;
+      }
+
+      .short-url {
+        font-size: 1rem;
+      }
+
+      .action-button {
+        padding: 10px 20px;
+        font-size: 0.95rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <a href="/" class="back-btn"><i class="fas fa-arrow-left"></i> Back</a>
+
+    <div class="success-check">
+      <i class="fas fa-check-circle"></i>
+    </div>
+
+    <h1>Your Short URL is Ready!</h1>
+
+    <p class="description">Your long URL has been successfully shortened. Copy your link and share it anywhere.</p>
+
+    <div class="url-card">
+      <a href="http://localhost:8000/url/<%= shortId %>" id="shortUrl" class="short-url" target="_blank">
+        http://localhost:8000/url/<%= shortId %>
+      </a>
+
+      <button class="action-button" onclick="copyUrl()">
+        <i class="fas fa-copy"></i> Copy URL
+      </button>
+
+      <div id="copyConfirm" class="copy-confirm">
+        <i class="fas fa-check-circle"></i> Copied!
+      </div>
+    </div>
+
+    <div class="features">
+      <div class="feature">
+        <i class="fas fa-link"></i>
+        <span class="feature-text">Easy to Share</span>
+      </div>
+      <div class="feature">
+        <i class="fas fa-bolt"></i>
+        <span class="feature-text">Instant Redirect</span>
+      </div>
+      <div class="feature">
+        <i class="fas fa-infinity"></i>
+        <span class="feature-text">Never Expires</span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function copyUrl() {
+      const url = document.getElementById('shortUrl').textContent;
+      navigator.clipboard.writeText(url).then(() => {
+        const confirm = document.getElementById('copyConfirm');
+        const button = document.querySelector('.action-button');
+        confirm.style.opacity = '1';
+        button.innerHTML = '<i class="fas fa-check"></i> Copied!';
+        button.style.background = '#22c55e';
+        setTimeout(() => {
+          confirm.style.opacity = '0';
+          button.innerHTML = '<i class="fas fa-copy"></i> Copy URL';
+          button.style.background = '#6366f1';
+        }, 2000);
+      }).catch(err => {
+        alert('Failed to copy URL. Please copy manually.');
+        console.error(err);
+      });
+    }
+  </script>
+</body>
+</html>

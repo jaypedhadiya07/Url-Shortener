@@ -1,0 +1,98 @@
+<nav class="navbar">
+  <div class="nav-container">
+    <a href="/" class="logo">🔗 Shortify</a>
+    <div class="nav-links">
+      <a href="/">Home</a>
+
+      <% if (typeof user !=='undefined' && user) { %>
+        <span class="user-welcome">Hello, <%= user.name %></span>
+
+        <a href="/user/logout">Logout</a>
+        <% if (user.role==='ADMIN' ) { %>
+          <a href="/admin/user" class="admin-link">Admin Dashboard</a>
+        <% } %>
+      <% } else { %>
+        <a href="/signup">Signup</a>
+        <a href="/login">Login</a>
+      <% } %>
+    </div>
+  </div>
+</nav>
+
+<style>
+  .navbar {
+    background: linear-gradient(135deg, #a5b4fc 0%, #6366f1 100%);
+    padding: 15px 25px;
+    color: #fff;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+  }
+
+  .nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: auto;
+  }
+
+  .navbar .logo {
+    font-size: 22px;
+    font-weight: 700;
+    color: #fff;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .nav-links a {
+    text-decoration: none;
+    color: #fff;
+    font-weight: 500;
+    padding: 8px 12px;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+  }
+
+  .nav-links a:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: translateY(-2px);
+  }
+
+  /* Admin button styled to match navbar gradient palette */
+  .admin-link {
+    background: linear-gradient(135deg, #6366f1, #4f46e5);
+    color: #fff;
+    font-weight: 600;
+    box-shadow: 0 3px 8px rgba(79, 70, 229, 0.35);
+  }
+
+  .admin-link:hover {
+    background: linear-gradient(135deg, #4f46e5, #3730a3);
+    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.5);
+    transform: translateY(-2px);
+  }
+
+  .user-welcome {
+    color: #E0E7FF;
+    font-weight: 500;
+    margin-right: 10px;
+  }
+
+  @media (max-width: 768px) {
+    .nav-container {
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .user-welcome {
+      display: none;
+    }
+  }
+</style>
